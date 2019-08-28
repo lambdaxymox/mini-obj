@@ -9,3 +9,7 @@ edition = "2018"
 wavefront_obj = { git = "https://github.com/lambdaxymox/wavefront-obj" }
 obj = { path = "obj/" }
 obj_gen = { path = "obj_gen/" }
+
+[build-dependencies]
+obj = { path = "obj/" }
+obj_gen = { path = "obj_gen/" }
