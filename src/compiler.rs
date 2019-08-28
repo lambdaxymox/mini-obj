@@ -447,4 +447,21 @@ mod loader_tests {
 
         assert_eq!(result.len(), expected.len());
     }
+
+    #[test]
+    fn test_compile_obj_mesh_elementwise() {
+        let test = test();
+        let mesh = test.obj_mesh;
+        let result = super::compile(&mesh);
+        let expected = test.ir;
+
+        for (i, (result_token, expected_token)) 
+            in result.data.iter().zip(expected.data.iter()).enumerate() {
+            
+            assert_eq!(result_token, expected_token, 
+                "Token {} did not match what was expected. Got token {:?}. Expected token {:?}.",
+                i, result_token, expected_token
+            );
+        }
+    }
 }
