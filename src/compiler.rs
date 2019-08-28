@@ -41,7 +41,101 @@ impl ObjMeshIR {
 }
 
 fn compile(mesh: &ObjMesh) -> ObjMeshIR {
-    unimplemented!("Compile has not been implemented yet!");
+    use Token::*;
+    
+    let mut ir = vec![];
+    // Start the code block.
+    ir.push(LCurlyBrace);
+    // Generate the points sets.
+    ir.push(SymLet); 
+    ir.push(SymPoints);
+    ir.push(Colon);
+    ir.push(SymTypeVec);
+    ir.push(LessThan);
+    ir.push(SymTypeFloat32);
+    ir.push(GreaterThan);
+    ir.push(Equals);
+    ir.push(SymMacroVec);
+    ir.push(LBracket);
+
+    for point in mesh.points() {
+        ir.push(LBracket);
+        ir.push(Float32(point[0]));
+        ir.push(Comma);
+        ir.push(Float32(point[1]));
+        ir.push(Comma);
+        ir.push(Float32(point[2]));
+        ir.push(RBracket);
+        ir.push(Comma);
+    }
+
+    ir.push(RBracket);
+    ir.push(Semicolon);
+
+    // Generate the texture coordinates set.
+    ir.push(SymLet); 
+    ir.push(SymTexCoords);
+    ir.push(Colon);
+    ir.push(SymTypeVec);
+    ir.push(LessThan);
+    ir.push(SymTypeFloat32);
+    ir.push(GreaterThan);
+    ir.push(Equals);
+    ir.push(SymMacroVec);
+    ir.push(LBracket);
+
+    for tex_coord in mesh.tex_coords() {
+        ir.push(LBracket);
+        ir.push(Float32(tex_coord[0]));
+        ir.push(Comma);
+        ir.push(Float32(tex_coord[1]));
+        ir.push(RBracket);
+        ir.push(Comma);
+    }
+
+    ir.push(RBracket);
+    ir.push(Semicolon);
+
+    // Generate the normal vector set.
+    ir.push(SymLet); 
+    ir.push(SymNormals);
+    ir.push(Colon);
+    ir.push(SymTypeVec);
+    ir.push(LessThan);
+    ir.push(SymTypeFloat32);
+    ir.push(GreaterThan);
+    ir.push(Equals);
+    ir.push(SymMacroVec);
+    ir.push(LBracket);
+
+    for normal in mesh.normals() {
+        ir.push(LBracket);
+        ir.push(Float32(normal[0]));
+        ir.push(Comma);
+        ir.push(Float32(normal[1]));
+        ir.push(Comma);
+        ir.push(Float32(normal[2]));
+        ir.push(RBracket);
+        ir.push(Comma);
+    }
+
+    ir.push(RBracket);
+    ir.push(Semicolon);
+
+    // Generate the type constructor invocation.
+    ir.push(SymTypeObjMesh);
+    ir.push(DoubleColon);
+    ir.push(SymConstructor);
+    ir.push(LParen);
+    ir.push(SymPoints); ir.push(Colon); ir.push(SymPoints); ir.push(Comma);
+    ir.push(SymTexCoords); ir.push(Colon); ir.push(SymTexCoords); ir.push(Comma);
+    ir.push(SymNormals); ir.push(Colon); ir.push(SymNormals); ir.push(Comma);
+    ir.push(RParen);
+
+    // End the code block.    
+    ir.push(RCurlyBrace);
+
+    ObjMeshIR::new(ir)
 }
 
 fn synthesize(ir: &ObjMeshIR) -> String {
