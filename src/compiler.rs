@@ -1,6 +1,12 @@
 use crate::obj::ObjMesh;
 
 
+pub fn to_rust_code(mesh: &ObjMesh) -> String {
+    let ir = compile(mesh);
+    synthesize(&ir)
+}
+
+
 #[derive(Copy, Clone, Debug, PartialEq)]
 enum Token {
     SymLet,
@@ -143,11 +149,6 @@ fn compile(mesh: &ObjMesh) -> ObjMeshIR {
 
 fn synthesize(ir: &ObjMeshIR) -> String {
     unimplemented!("Code synthesis has not been implemented yet!");
-}
-
-pub fn to_rust_code(mesh: &ObjMesh) -> String {
-    let ir = compile(mesh);
-    synthesize(&ir)
 }
 
 
