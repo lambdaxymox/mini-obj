@@ -1,5 +1,5 @@
 extern crate obj;
-extern crate obj_gen;
 
-pub use obj::*;
+mod obj_gen;
+
 pub use obj_gen::*;
