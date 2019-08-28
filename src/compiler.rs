@@ -130,9 +130,9 @@ fn compile(mesh: &ObjMesh) -> ObjMeshIR {
     ir.push(DoubleColon);
     ir.push(SymConstructor);
     ir.push(LParen);
-    ir.push(SymPoints); ir.push(Colon); ir.push(SymPoints); ir.push(Comma);
+    ir.push(SymPoints);    ir.push(Colon); ir.push(SymPoints);    ir.push(Comma);
     ir.push(SymTexCoords); ir.push(Colon); ir.push(SymTexCoords); ir.push(Comma);
-    ir.push(SymNormals); ir.push(Colon); ir.push(SymNormals); ir.push(Comma);
+    ir.push(SymNormals);   ir.push(Colon); ir.push(SymNormals);
     ir.push(RParen);
 
     // End the code block.    
@@ -253,7 +253,7 @@ mod loader_tests {
                     LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
                     LBracket, Float32(1f32), Comma, Float32(1f32), Comma, Float32(0f32), RBracket, Comma,
                     LBracket, Float32(1f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    
+
                     LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
                     LBracket, Float32(0f32), Comma, Float32(1f32), Comma, Float32(0f32), RBracket, Comma,
                     LBracket, Float32(1f32), Comma, Float32(1f32), Comma, Float32(0f32), RBracket, Comma,
@@ -277,10 +277,6 @@ mod loader_tests {
                     LBracket, Float32(1f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
                     LBracket, Float32(1f32), Comma, Float32(1f32), Comma, Float32(0f32), RBracket, Comma,
                     LBracket, Float32(1f32), Comma, Float32(1f32), Comma, Float32(1f32), RBracket, Comma,
-
-                    LBracket, Float32(1f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(1f32), Comma, Float32(1f32), Comma, Float32(1f32), RBracket, Comma,
-                    LBracket, Float32(1f32), Comma, Float32(0f32), Comma, Float32(1f32), RBracket, Comma,
 
                     LBracket, Float32(1f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
                     LBracket, Float32(1f32), Comma, Float32(1f32), Comma, Float32(1f32), RBracket, Comma,
@@ -303,57 +299,53 @@ mod loader_tests {
                     LBracket, Float32(0f32), Comma, Float32(1f32), Comma, Float32(1f32), RBracket, Comma,
                 RBracket, Semicolon,
                 SymLet, SymTexCoords, Colon, SymTypeVec, LessThan, SymTypeFloat32, GreaterThan, Equals, SymMacroVec, LBracket,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
 
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
 
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
 
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
 
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
 
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
 
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
 
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
 
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
 
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
 
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
 
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
-                    LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
+                    LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
                 RBracket, Semicolon,
                 SymLet, SymNormals, Colon, SymTypeVec, LessThan, SymTypeFloat32, GreaterThan, Equals, SymMacroVec, LBracket,
                     LBracket, Float32( 0f32), Comma, Float32( 0f32), Comma, Float32(-1f32), RBracket, Comma,
@@ -405,7 +397,7 @@ mod loader_tests {
                     LBracket, Float32( 0f32), Comma, Float32( 0f32), Comma, Float32( 1f32), RBracket, Comma,
                 RBracket, Semicolon,
                 SymTypeObjMesh, DoubleColon, SymConstructor, LParen, 
-                    SymPoints, Comma, SymTexCoords, Comma, SymNormals, 
+                    SymPoints, Colon, SymPoints, Comma, SymTexCoords, Colon, SymTexCoords, Comma, SymNormals, Colon, SymNormals, 
                 RParen,
             RCurlyBrace,
         ]);
@@ -458,7 +450,7 @@ mod loader_tests {
             in result.data.iter().zip(expected.data.iter()).enumerate() {
             
             assert_eq!(result_token, expected_token, 
-                "Token {} did not match what was expected. Got token {:?}. Expected token {:?}.",
+                "Token {} did not match what was expected. Got token `{:?}`. Expected token `{:?}`.",
                 i, result_token, expected_token
             );
         }
