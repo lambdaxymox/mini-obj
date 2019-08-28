@@ -138,9 +138,7 @@ fn compile(mesh: &ObjMesh) -> ObjMeshIR {
     ir.push(DoubleColon);
     ir.push(SymConstructor);
     ir.push(LParen);
-    ir.push(SymPoints);    ir.push(Colon); ir.push(SymPoints);    ir.push(Comma);
-    ir.push(SymTexCoords); ir.push(Colon); ir.push(SymTexCoords); ir.push(Comma);
-    ir.push(SymNormals);   ir.push(Colon); ir.push(SymNormals);
+    ir.push(SymPoints); ir.push(Comma); ir.push(SymTexCoords); ir.push(Comma); ir.push(SymNormals);
     ir.push(RParen);
 
     // End the code block.    
@@ -171,10 +169,10 @@ fn synthesize_token(token: Token) -> String {
         RCurlyBrace => format!("{}", "}"),
         GreaterThan => format!("{}", ">"),
         LessThan => format!("{}", "<"),
-        Comma => format!("{}", ";"),
+        Comma => format!("{}", ","),
         LParen => format!("{}", "("),
         RParen => format!("{}", ")"),
-        Float32(number) => format!("{}", number),
+        Float32(number) => format!("{:.*}", 8, number),
     }
 }
 
@@ -184,7 +182,7 @@ fn synthesize(ir: &ObjMeshIR) -> String {
     let mut fragment = String::new();
     for token in ir.data.iter() {
         fragment.push_str(&synthesize_token(*token));
-        fragment.push_str(&format!("{}", ""));
+        fragment.push_str(&format!("{}", " "));
     }
 
     fragment
@@ -437,7 +435,7 @@ mod loader_tests {
                     LBracket, Float32( 0f32), Comma, Float32( 0f32), Comma, Float32( 1f32), RBracket, Comma,
                 RBracket, Semicolon,
                 SymTypeObjMesh, DoubleColon, SymConstructor, LParen, 
-                    SymPoints, Colon, SymPoints, Comma, SymTexCoords, Colon, SymTexCoords, Comma, SymNormals, Colon, SymNormals, 
+                    SymPoints, Comma, SymTexCoords, Comma, SymNormals, 
                 RParen,
             RCurlyBrace,
         ]);
