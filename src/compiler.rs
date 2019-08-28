@@ -321,11 +321,21 @@ mod loader_tests {
     }
 
     #[test]
-    fn test_compile_obj_mesh() {
+    fn test_parse_obj_mesh() {
         let test = test();
         let mut reader = BufReader::new(Cursor::new(test.obj_file.as_bytes()));
         let result = obj::load(&mut reader).unwrap();
         let expected = test.obj_mesh;
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_compile_obj_mesh() {
+        let test = test();
+        let mesh = test.obj_mesh;
+        let result = super::compile(&mesh);
+        let expected = test.ir;
 
         assert_eq!(result, expected);
     }
