@@ -3,7 +3,7 @@ use obj::ObjMesh;
 
 
 const SAMPLE_DATA: &str = "assets/triangle.obj";
-
+const TRIANGLE_FRAGMENT: &str = "triangle_obj_code_gen_test.in";
 
 #[test]
 fn test_obj_load_file() {
@@ -45,7 +45,7 @@ fn test_obj_load_file() {
 
 #[test]
 fn test_obj_code_generator() {
-    let result = include!("triangle_obj_code_gen_test.in");
+    let result = include!(TRIANGLE_FRAGMENT);
     let result = obj::load_file(SAMPLE_DATA).unwrap();
     let points: Vec<[f32; 3]> = vec![
         [-0.577350, -0.500000, -0.100000], [ 0.577350, -0.500000, -0.100000], [-0.577350, -0.500000,  0.100000],
@@ -85,7 +85,7 @@ fn test_obj_code_generator() {
 #[test]
 fn test_obj_code_generator_end_to_end() {
     let expected = obj::load_file(SAMPLE_DATA).unwrap();
-    let result = include!("triangle_obj_code_gen_test.in");
+    let result = include!(TRIANGLE_FRAGMENT);
 
     assert_eq!(result, expected);
 }
