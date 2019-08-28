@@ -149,8 +149,45 @@ fn compile(mesh: &ObjMesh) -> ObjMeshIR {
     ObjMeshIR::new(ir)
 }
 
+fn synthesize_token(token: Token) -> String {
+    use Token::*;
+    match token {
+        SymLet => format!("{}", "let"),
+        SymPoints => format!("{}", "points"),
+        SymTexCoords => format!("{}", "tex_coords"),
+        SymNormals => format!("{}", "normals"),
+        SymTypeFloat32 => format!("{}", "f32"),
+        SymTypeObjMesh => format!("{}", "ObjMesh"),
+        SymTypeVec => format!("{}", "Vec"),
+        SymConstructor => format!("{}", "new"),
+        SymMacroVec => format!("{}", "vec!"),
+        Equals => format!("{}", "="),
+        Colon => format!("{}", ":"),
+        DoubleColon => format!("{}", "::"),
+        Semicolon => format!("{}", ";"),
+        LBracket => format!("{}", "["),
+        RBracket => format!("{}", "]"),
+        LCurlyBrace => format!("{}", "{"),
+        RCurlyBrace => format!("{}", "}"),
+        GreaterThan => format!("{}", ">"),
+        LessThan => format!("{}", "<"),
+        Comma => format!("{}", ";"),
+        LParen => format!("{}", "("),
+        RParen => format!("{}", ")"),
+        Float32(number) => format!("{}", number),
+    }
+}
+
 fn synthesize(ir: &ObjMeshIR) -> String {
-    unimplemented!("Code synthesis has not been implemented yet!");
+    use Token::*;
+
+    let mut fragment = String::new();
+    for token in ir.data.iter() {
+        fragment.push_str(&synthesize_token(*token));
+        fragment.push_str(&format!("{}", ""));
+    }
+
+    fragment
 }
 
 
