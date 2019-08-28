@@ -1,4 +1,4 @@
-use mini_obj as obj;
+use obj;
 use obj::ObjMesh;
 
 

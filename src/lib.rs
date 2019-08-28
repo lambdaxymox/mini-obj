@@ -1,4 +1,5 @@
-mod obj;
+extern crate obj;
+
 mod compiler;
 
 pub use obj::*;
