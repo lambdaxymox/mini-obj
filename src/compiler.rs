@@ -38,6 +38,10 @@ impl ObjMeshIR {
     fn new(data: Vec<Token>) -> ObjMeshIR {
         ObjMeshIR { data }
     }
+
+    fn len(&self) -> usize {
+        self.data.len()
+    }
 }
 
 fn compile(mesh: &ObjMesh) -> ObjMeshIR {
@@ -432,5 +436,15 @@ mod loader_tests {
         let expected = test.ir;
 
         assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_compile_obj_mesh_ir_length() {
+        let test = test();
+        let mesh = test.obj_mesh;
+        let result = super::compile(&mesh);
+        let expected = test.ir;
+
+        assert_eq!(result.len(), expected.len());
     }
 }
