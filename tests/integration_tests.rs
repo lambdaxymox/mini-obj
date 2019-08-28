@@ -81,3 +81,11 @@ fn test_obj_code_generator() {
 
     assert_eq!(result, expected);
 }
+
+#[test]
+fn test_obj_code_generator_end_to_end() {
+    let expected = obj::load_file(SAMPLE_DATA).unwrap();
+    let result = include!("triangle_obj_code_gen_test.in");
+
+    assert_eq!(result, expected);
+}
