@@ -10,6 +10,8 @@ pub fn to_rust_code(mesh: &ObjMesh) -> String {
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 enum Token {
+    SymUse,
+    SymMiniObj,
     SymLet,
     SymPoints,
     SymTexCoords,
@@ -55,6 +57,19 @@ impl ObjMeshIR {
     fn push(&mut self, item: Token) {
         self.data.push(item);
     }
+}
+
+/// Generate an import statement.
+fn generate_imports(ir: &mut ObjMeshIR, indent: usize) {
+    use Token::*;
+    
+    ir.push(Whitespace(indent));
+    ir.push(SymUse);
+    ir.push(Whitespace(1));
+    ir.push(SymMiniObj);
+    ir.push(DoubleColon);
+    ir.push(SymTypeObjMesh);
+    ir.push(Semicolon);
 }
 
 /// Generate the points set code for the object mesh.
@@ -196,7 +211,7 @@ fn generate_normals_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
 }
 
 /// Generate the type constructor invocation code.
-fn generate_type_constructor_invocation(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
+fn generate_type_constructor_invocation(ir: &mut ObjMeshIR, indent: usize) {
     use Token::*;
 
     ir.push(Whitespace(indent));
@@ -219,6 +234,11 @@ fn generate_code(mesh: &ObjMesh) -> ObjMeshIR {
     ir.push(LCurlyBrace);
     ir.push(Newline);
 
+    // Generate the import statements.
+    generate_imports(&mut ir, indent);
+    ir.push(Newline);
+    ir.push(Newline);
+
     // Generate the points sets.
     generate_points_code(&mut ir, mesh, indent);
     ir.push(Newline);
@@ -233,7 +253,7 @@ fn generate_code(mesh: &ObjMesh) -> ObjMeshIR {
     ir.push(Newline);
 
     // Generate the type constructor invocation.
-    generate_type_constructor_invocation(&mut ir, mesh, indent);
+    generate_type_constructor_invocation(&mut ir, indent);
     ir.push(Newline);
 
     // End the code block.    
@@ -245,6 +265,8 @@ fn generate_code(mesh: &ObjMesh) -> ObjMeshIR {
 fn synthesize_token(token: Token) -> String {
     use Token::*;
     match token {
+        SymUse => format!("{}", "use"),
+        SymMiniObj => format!("{}", "mini_obj"),
         SymLet => format!("{}", "let"),
         SymPoints => format!("{}", "points"),
         SymTexCoords => format!("{}", "tex_coords"),
@@ -382,6 +404,8 @@ mod loader_tests {
         use Token::*; 
         let ir = ObjMeshIR::new(vec![
             LCurlyBrace, Newline,
+                Whitespace(4), SymUse, Whitespace(1), SymMiniObj, DoubleColon, SymTypeObjMesh, Semicolon, Newline,
+                Newline,
                 Whitespace(4), SymLet, Whitespace(1), SymPoints, Colon, Whitespace(1), SymTypeVec, LessThan, 
                     LBracket, SymTypeFloat32, Semicolon, Whitespace(1), ArrayLength(3), RBracket, 
                 GreaterThan, Whitespace(1), Equals, Whitespace(1), SymMacroVec, LBracket, 

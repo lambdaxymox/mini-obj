@@ -46,7 +46,6 @@ fn test_obj_load_file() {
 #[test]
 fn test_obj_code_generator() {
     let result = include!("triangle_obj_code_gen_test.in");
-    let result = obj::load_file(SAMPLE_DATA).unwrap();
     let points: Vec<[f32; 3]> = vec![
         [-0.577350, -0.500000, -0.100000], [ 0.577350, -0.500000, -0.100000], [-0.577350, -0.500000,  0.100000],
         [ 0.577350, -0.500000, -0.100000], [ 0.577350, -0.500000,  0.100000], [-0.577350, -0.500000,  0.100000],
