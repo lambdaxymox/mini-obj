@@ -278,8 +278,6 @@ fn synthesize_token(token: Token) -> String {
 }
 
 fn synthesize_code(ir: &ObjMeshIR) -> String {
-    use Token::*;
-
     let mut fragment = String::new();
     for token in ir.data.iter() {
         fragment.push_str(&synthesize_token(*token));
@@ -386,10 +384,10 @@ mod loader_tests {
 
         use Token::*; 
         let ir = ObjMeshIR::new(vec![
-            LCurlyBrace,
-                SymLet, SymPoints, Colon, SymTypeVec, LessThan, 
-                    LBracket, SymTypeFloat32, Semicolon, ArrayLength(3), RBracket, 
-                GreaterThan, Equals, SymMacroVec, LBracket,
+            LCurlyBrace, Newline, Whitespace(4),
+                SymLet, Whitespace(1), SymPoints, Colon, Whitespace(1), SymTypeVec, LessThan, 
+                    LBracket, SymTypeFloat32, Semicolon, Whitespace(1), ArrayLength(3), RBracket, 
+                GreaterThan, Whitespace(1), Equals, Whitespace(1), SymMacroVec, LBracket, Newline,
                     LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
                     LBracket, Float32(1f32), Comma, Float32(1f32), Comma, Float32(0f32), RBracket, Comma,
                     LBracket, Float32(1f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
