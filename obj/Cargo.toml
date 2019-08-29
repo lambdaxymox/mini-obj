@@ -1,10 +1,10 @@
 [package]
 name = "obj"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["LambdaXymox <lambda.xymox@gmail.com>"]
 edition = "2018"
+description = "A crate for loading object meshes."
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 wavefront_obj = { git = "https://github.com/lambdaxymox/wavefront-obj" }
