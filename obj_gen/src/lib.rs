@@ -63,6 +63,7 @@ fn generate_points_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
 
     ir.push(Whitespace(indent));
     ir.push(SymLet);
+    ir.push(Whitespace(1));
     ir.push(SymPoints);
     ir.push(Colon);
     ir.push(Whitespace(1));
@@ -74,9 +75,14 @@ fn generate_points_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
     ir.push(RBracket);
     //
     ir.push(GreaterThan);
+    ir.push(Whitespace(1));
     ir.push(Equals);
+    ir.push(Whitespace(1));
     ir.push(SymMacroVec);
     ir.push(LBracket);
+    ir.push(Newline);
+    ir.push(Whitespace(indent));
+    ir.push(Whitespace(indent));
 
     for point in mesh.points() {
         // TODO: Make array generation its own function.
@@ -93,6 +99,8 @@ fn generate_points_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
         ir.push(Whitespace(1));
     }
 
+    ir.push(Newline);
+    ir.push(Whitespace(indent));
     ir.push(RBracket);
     ir.push(Semicolon);
 }
@@ -102,7 +110,8 @@ fn generate_tex_coords_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
     use Token::*;
 
     ir.push(Whitespace(indent));
-    ir.push(SymLet); 
+    ir.push(SymLet);
+    ir.push(Whitespace(1)); 
     ir.push(SymTexCoords);
     ir.push(Colon);
     ir.push(Whitespace(1));
@@ -114,9 +123,14 @@ fn generate_tex_coords_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
     ir.push(RBracket);
     //
     ir.push(GreaterThan);
+    ir.push(Whitespace(1));
     ir.push(Equals);
+    ir.push(Whitespace(1));
     ir.push(SymMacroVec);
     ir.push(LBracket);
+    ir.push(Newline);
+    ir.push(Whitespace(indent));
+    ir.push(Whitespace(indent));
 
     for tex_coord in mesh.tex_coords() {
         // TODO: Make array generation its own function.
@@ -130,6 +144,8 @@ fn generate_tex_coords_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
         ir.push(Whitespace(1));
     }
 
+    ir.push(Newline);
+    ir.push(Whitespace(indent));
     ir.push(RBracket);
     ir.push(Semicolon);
 }
@@ -139,7 +155,8 @@ fn generate_normals_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
     use Token::*;
 
     ir.push(Whitespace(indent));
-    ir.push(SymLet); 
+    ir.push(SymLet);
+    ir.push(Whitespace(1));
     ir.push(SymNormals);
     ir.push(Colon);
     ir.push(Whitespace(1));
@@ -151,9 +168,14 @@ fn generate_normals_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
     ir.push(RBracket);
     //
     ir.push(GreaterThan);
+    ir.push(Whitespace(1));
     ir.push(Equals);
+    ir.push(Whitespace(1));
     ir.push(SymMacroVec);
     ir.push(LBracket);
+    ir.push(Newline);
+    ir.push(Whitespace(indent));
+    ir.push(Whitespace(indent));
 
     for normal in mesh.normals() {
         // TODO: Make array generation its own function.
@@ -170,6 +192,8 @@ fn generate_normals_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
         ir.push(Whitespace(1));
     }
 
+    ir.push(Newline);
+    ir.push(Whitespace(indent));
     ir.push(RBracket);
     ir.push(Semicolon);
 }
@@ -249,7 +273,7 @@ fn synthesize_token(token: Token) -> String {
         Float32(number) => format!("{:.*}", 8, number),
         ArrayLength(number) => format!("{}", number),
         Newline => format!("{}", "\n"),
-        Whitespace(number) => format!("{:width$}", width = number),
+        Whitespace(number) => format!("{:width$}", "", width = number),
     }
 }
 
@@ -259,7 +283,6 @@ fn synthesize_code(ir: &ObjMeshIR) -> String {
     let mut fragment = String::new();
     for token in ir.data.iter() {
         fragment.push_str(&synthesize_token(*token));
-        fragment.push_str(&format!("{}", " "));
     }
 
     fragment
