@@ -8,7 +8,6 @@ pub fn to_rust_code(mesh: &ObjMesh) -> String {
     synthesize_code(&ir)
 }
 
-
 #[derive(Copy, Clone, Debug, PartialEq)]
 enum Token {
     SymLet,
@@ -35,6 +34,8 @@ enum Token {
     RParen,
     Float32(f32),
     ArrayLength(usize),
+    Newline,
+    Whitespace(usize),
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -44,22 +45,23 @@ struct ObjMeshIR {
 
 impl ObjMeshIR {
     fn new(data: Vec<Token>) -> ObjMeshIR {
-        ObjMeshIR { data }
+        ObjMeshIR { data: data }
     }
 
     fn len(&self) -> usize {
         self.data.len()
     }
+
+    fn push(&mut self, item: Token) {
+        self.data.push(item);
+    }
 }
 
-fn generate_code(mesh: &ObjMesh) -> ObjMeshIR {
+/// Generate the points set code for the object mesh.
+fn generate_points_code(ir: &mut ObjMeshIR, mesh: &ObjMesh) {
     use Token::*;
-    
-    let mut ir = vec![];
-    // Start the code block.
-    ir.push(LCurlyBrace);
-    // Generate the points sets.
-    ir.push(SymLet); 
+
+    ir.push(SymLet);
     ir.push(SymPoints);
     ir.push(Colon);
     ir.push(SymTypeVec);
@@ -85,8 +87,12 @@ fn generate_code(mesh: &ObjMesh) -> ObjMeshIR {
 
     ir.push(RBracket);
     ir.push(Semicolon);
+}
 
-    // Generate the texture coordinates set.
+/// Generate the tex coordinates set code for the object mesh.
+fn generate_tex_coords_code(ir: &mut ObjMeshIR, mesh: &ObjMesh) {
+    use Token::*;
+
     ir.push(SymLet); 
     ir.push(SymTexCoords);
     ir.push(Colon);
@@ -110,9 +116,13 @@ fn generate_code(mesh: &ObjMesh) -> ObjMeshIR {
     }
 
     ir.push(RBracket);
-    ir.push(Semicolon);
+    ir.push(Semicolon);    
+}
 
-    // Generate the normal vector set.
+/// Generate the normal vector set code for the object mesh.
+fn generate_normal_coords_code(ir: &mut ObjMeshIR, mesh: &ObjMesh) {
+    use Token::*;
+
     ir.push(SymLet); 
     ir.push(SymNormals);
     ir.push(Colon);
@@ -139,19 +149,51 @@ fn generate_code(mesh: &ObjMesh) -> ObjMeshIR {
 
     ir.push(RBracket);
     ir.push(Semicolon);
+}
 
-    // Generate the type constructor invocation.
+/// Generate the type constructor invocation code.
+fn generate_type_constructor_invocation(ir: &mut ObjMeshIR, mesh: &ObjMesh) {
+    use Token::*;
+
     ir.push(SymTypeObjMesh);
     ir.push(DoubleColon);
     ir.push(SymConstructor);
     ir.push(LParen);
     ir.push(SymPoints); ir.push(Comma); ir.push(SymTexCoords); ir.push(Comma); ir.push(SymNormals);
     ir.push(RParen);
+}
+
+/// Generate the Rust code expression block for constructing the 
+/// object mesh at compile time.
+fn generate_code(mesh: &ObjMesh) -> ObjMeshIR {
+    use Token::*;
+    
+    let mut ir = ObjMeshIR::new(vec![]);
+    // Start the code block.
+    ir.push(LCurlyBrace);
+
+    // Generate the points sets.
+    generate_points_code(&mut ir, mesh);
+
+    // Generate the texture coordinates set.
+    generate_tex_coords_code(&mut ir, mesh);
+
+    // Generate the normal vector set.
+    generate_normal_coords_code(&mut ir, mesh);
+
+    // Insert newline(s).
+    // Insert whitespace.
+
+    // Generate the type constructor invocation.
+    generate_type_constructor_invocation(&mut ir, mesh);
+
+    // Insert newline(s).
+    // insert whitespace.
 
     // End the code block.    
     ir.push(RCurlyBrace);
 
-    ObjMeshIR::new(ir)
+    ir
 }
 
 fn synthesize_token(token: Token) -> String {
@@ -181,6 +223,8 @@ fn synthesize_token(token: Token) -> String {
         RParen => format!("{}", ")"),
         Float32(number) => format!("{:.*}", 8, number),
         ArrayLength(number) => format!("{}", number),
+        Newline => format!("{}", "\n"),
+        Whitespace(number) => format!("{}", number),
     }
 }
 
@@ -477,7 +521,7 @@ mod loader_tests {
     fn test_compile_obj_mesh() {
         let test = test();
         let mesh = test.obj_mesh;
-        let result = super::compile(&mesh);
+        let result = super::generate_code(&mesh);
         let expected = test.ir;
 
         assert_eq!(result, expected);
@@ -487,7 +531,7 @@ mod loader_tests {
     fn test_compile_obj_mesh_ir_length() {
         let test = test();
         let mesh = test.obj_mesh;
-        let result = super::compile(&mesh);
+        let result = super::generate_code(&mesh);
         let expected = test.ir;
 
         assert_eq!(result.len(), expected.len());
@@ -497,7 +541,7 @@ mod loader_tests {
     fn test_compile_obj_mesh_elementwise() {
         let test = test();
         let mesh = test.obj_mesh;
-        let result = super::compile(&mesh);
+        let result = super::generate_code(&mesh);
         let expected = test.ir;
 
         for (i, (result_token, expected_token)) 
