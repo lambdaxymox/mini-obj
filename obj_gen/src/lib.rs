@@ -58,31 +58,39 @@ impl ObjMeshIR {
 }
 
 /// Generate the points set code for the object mesh.
-fn generate_points_code(ir: &mut ObjMeshIR, mesh: &ObjMesh) {
+fn generate_points_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
     use Token::*;
 
+    ir.push(Whitespace(indent));
     ir.push(SymLet);
     ir.push(SymPoints);
     ir.push(Colon);
+    ir.push(Whitespace(1));
     ir.push(SymTypeVec);
     ir.push(LessThan);
-    ir.push(LBracket); 
-    ir.push(SymTypeFloat32); ir.push(Semicolon); ir.push(ArrayLength(3)); 
+    // TODO: Make array type generation its own function.
+    ir.push(LBracket);
+    ir.push(SymTypeFloat32); ir.push(Semicolon); ir.push(Whitespace(1)); ir.push(ArrayLength(3));
     ir.push(RBracket);
+    //
     ir.push(GreaterThan);
     ir.push(Equals);
     ir.push(SymMacroVec);
     ir.push(LBracket);
 
     for point in mesh.points() {
+        // TODO: Make array generation its own function.
         ir.push(LBracket);
         ir.push(Float32(point[0]));
         ir.push(Comma);
+        ir.push(Whitespace(1));
         ir.push(Float32(point[1]));
         ir.push(Comma);
+        ir.push(Whitespace(1));
         ir.push(Float32(point[2]));
         ir.push(RBracket);
         ir.push(Comma);
+        ir.push(Whitespace(1));
     }
 
     ir.push(RBracket);
@@ -90,61 +98,76 @@ fn generate_points_code(ir: &mut ObjMeshIR, mesh: &ObjMesh) {
 }
 
 /// Generate the tex coordinates set code for the object mesh.
-fn generate_tex_coords_code(ir: &mut ObjMeshIR, mesh: &ObjMesh) {
+fn generate_tex_coords_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
     use Token::*;
 
+    ir.push(Whitespace(indent));
     ir.push(SymLet); 
     ir.push(SymTexCoords);
     ir.push(Colon);
+    ir.push(Whitespace(1));
     ir.push(SymTypeVec);
     ir.push(LessThan);
+    // TODO: Make array generation its own function.
     ir.push(LBracket); 
-    ir.push(SymTypeFloat32); ir.push(Semicolon); ir.push(ArrayLength(2)); 
+    ir.push(SymTypeFloat32); ir.push(Semicolon); ir.push(Whitespace(1)); ir.push(ArrayLength(2));
     ir.push(RBracket);
+    //
     ir.push(GreaterThan);
     ir.push(Equals);
     ir.push(SymMacroVec);
     ir.push(LBracket);
 
     for tex_coord in mesh.tex_coords() {
+        // TODO: Make array generation its own function.
         ir.push(LBracket);
         ir.push(Float32(tex_coord[0]));
         ir.push(Comma);
+        ir.push(Whitespace(1));
         ir.push(Float32(tex_coord[1]));
         ir.push(RBracket);
         ir.push(Comma);
+        ir.push(Whitespace(1));
     }
 
     ir.push(RBracket);
-    ir.push(Semicolon);    
+    ir.push(Semicolon);
 }
 
 /// Generate the normal vector set code for the object mesh.
-fn generate_normal_coords_code(ir: &mut ObjMeshIR, mesh: &ObjMesh) {
+fn generate_normals_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
     use Token::*;
 
+    ir.push(Whitespace(indent));
     ir.push(SymLet); 
     ir.push(SymNormals);
     ir.push(Colon);
+    ir.push(Whitespace(1));
     ir.push(SymTypeVec);
     ir.push(LessThan);
+    // TODO: Array type generate function.
     ir.push(LBracket); 
-    ir.push(SymTypeFloat32); ir.push(Semicolon); ir.push(ArrayLength(3)); 
+    ir.push(SymTypeFloat32); ir.push(Semicolon); ir.push(Whitespace(1)); ir.push(ArrayLength(3)); 
     ir.push(RBracket);
+    //
     ir.push(GreaterThan);
     ir.push(Equals);
     ir.push(SymMacroVec);
     ir.push(LBracket);
 
     for normal in mesh.normals() {
+        // TODO: Make array generation its own function.
         ir.push(LBracket);
         ir.push(Float32(normal[0]));
         ir.push(Comma);
+        ir.push(Whitespace(1));
         ir.push(Float32(normal[1]));
         ir.push(Comma);
+        ir.push(Whitespace(1));
         ir.push(Float32(normal[2]));
         ir.push(RBracket);
         ir.push(Comma);
+        ir.push(Whitespace(1));
     }
 
     ir.push(RBracket);
@@ -152,14 +175,15 @@ fn generate_normal_coords_code(ir: &mut ObjMeshIR, mesh: &ObjMesh) {
 }
 
 /// Generate the type constructor invocation code.
-fn generate_type_constructor_invocation(ir: &mut ObjMeshIR, mesh: &ObjMesh) {
+fn generate_type_constructor_invocation(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
     use Token::*;
 
+    ir.push(Whitespace(indent));
     ir.push(SymTypeObjMesh);
     ir.push(DoubleColon);
     ir.push(SymConstructor);
     ir.push(LParen);
-    ir.push(SymPoints); ir.push(Comma); ir.push(SymTexCoords); ir.push(Comma); ir.push(SymNormals);
+    ir.push(SymPoints); ir.push(Comma); ir.push(Whitespace(1)); ir.push(SymTexCoords); ir.push(Comma); ir.push(Whitespace(1)); ir.push(SymNormals);
     ir.push(RParen);
 }
 
@@ -169,26 +193,27 @@ fn generate_code(mesh: &ObjMesh) -> ObjMeshIR {
     use Token::*;
     
     let mut ir = ObjMeshIR::new(vec![]);
+    let indent = 4;
     // Start the code block.
     ir.push(LCurlyBrace);
+    ir.push(Newline);
 
     // Generate the points sets.
-    generate_points_code(&mut ir, mesh);
+    generate_points_code(&mut ir, mesh, indent);
+    ir.push(Newline);
 
     // Generate the texture coordinates set.
-    generate_tex_coords_code(&mut ir, mesh);
+    generate_tex_coords_code(&mut ir, mesh, indent);
+    ir.push(Newline);
 
     // Generate the normal vector set.
-    generate_normal_coords_code(&mut ir, mesh);
-
-    // Insert newline(s).
-    // Insert whitespace.
+    generate_normals_code(&mut ir, mesh, indent);
+    ir.push(Newline);
+    ir.push(Newline);
 
     // Generate the type constructor invocation.
-    generate_type_constructor_invocation(&mut ir, mesh);
-
-    // Insert newline(s).
-    // insert whitespace.
+    generate_type_constructor_invocation(&mut ir, mesh, indent);
+    ir.push(Newline);
 
     // End the code block.    
     ir.push(RCurlyBrace);
@@ -224,7 +249,7 @@ fn synthesize_token(token: Token) -> String {
         Float32(number) => format!("{:.*}", 8, number),
         ArrayLength(number) => format!("{}", number),
         Newline => format!("{}", "\n"),
-        Whitespace(number) => format!("{}", number),
+        Whitespace(number) => format!("{:width$}", width = number),
     }
 }
 
