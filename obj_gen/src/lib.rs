@@ -36,7 +36,6 @@ enum Token {
     ArrayLength(usize),
     Newline,
     Whitespace(usize),
-    POTATO,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -272,7 +271,6 @@ fn synthesize_token(token: Token) -> String {
         ArrayLength(number) => format!("{}", number),
         Newline => format!("{}", "\n"),
         Whitespace(number) => format!("{:width$}", "", width = number),
-        POTATO => format!(""),
     }
 }
 
