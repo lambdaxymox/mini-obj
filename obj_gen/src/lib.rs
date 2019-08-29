@@ -4,8 +4,8 @@ use obj::ObjMesh;
 
 
 pub fn to_rust_code(mesh: &ObjMesh) -> String {
-    let ir = compile(mesh);
-    synthesize(&ir)
+    let ir = generate_code(mesh);
+    synthesize_code(&ir)
 }
 
 
@@ -52,7 +52,7 @@ impl ObjMeshIR {
     }
 }
 
-fn compile(mesh: &ObjMesh) -> ObjMeshIR {
+fn generate_code(mesh: &ObjMesh) -> ObjMeshIR {
     use Token::*;
     
     let mut ir = vec![];
@@ -184,7 +184,7 @@ fn synthesize_token(token: Token) -> String {
     }
 }
 
-fn synthesize(ir: &ObjMeshIR) -> String {
+fn synthesize_code(ir: &ObjMeshIR) -> String {
     use Token::*;
 
     let mut fragment = String::new();
