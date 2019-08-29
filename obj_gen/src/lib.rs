@@ -34,6 +34,7 @@ enum Token {
     LParen,
     RParen,
     Float32(f32),
+    ArrayLength(usize),
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -63,7 +64,9 @@ fn compile(mesh: &ObjMesh) -> ObjMeshIR {
     ir.push(Colon);
     ir.push(SymTypeVec);
     ir.push(LessThan);
-    ir.push(SymTypeFloat32);
+    ir.push(LBracket); 
+    ir.push(SymTypeFloat32); ir.push(Semicolon); ir.push(ArrayLength(3)); 
+    ir.push(RBracket);
     ir.push(GreaterThan);
     ir.push(Equals);
     ir.push(SymMacroVec);
@@ -89,7 +92,9 @@ fn compile(mesh: &ObjMesh) -> ObjMeshIR {
     ir.push(Colon);
     ir.push(SymTypeVec);
     ir.push(LessThan);
-    ir.push(SymTypeFloat32);
+    ir.push(LBracket); 
+    ir.push(SymTypeFloat32); ir.push(Semicolon); ir.push(ArrayLength(2)); 
+    ir.push(RBracket);
     ir.push(GreaterThan);
     ir.push(Equals);
     ir.push(SymMacroVec);
@@ -113,7 +118,9 @@ fn compile(mesh: &ObjMesh) -> ObjMeshIR {
     ir.push(Colon);
     ir.push(SymTypeVec);
     ir.push(LessThan);
-    ir.push(SymTypeFloat32);
+    ir.push(LBracket); 
+    ir.push(SymTypeFloat32); ir.push(Semicolon); ir.push(ArrayLength(3)); 
+    ir.push(RBracket);
     ir.push(GreaterThan);
     ir.push(Equals);
     ir.push(SymMacroVec);
@@ -173,6 +180,7 @@ fn synthesize_token(token: Token) -> String {
         LParen => format!("{}", "("),
         RParen => format!("{}", ")"),
         Float32(number) => format!("{:.*}", 8, number),
+        ArrayLength(number) => format!("{}", number),
     }
 }
 
@@ -287,7 +295,9 @@ mod loader_tests {
         use Token::*; 
         let ir = ObjMeshIR::new(vec![
             LCurlyBrace,
-                SymLet, SymPoints, Colon, SymTypeVec, LessThan, SymTypeFloat32, GreaterThan, Equals, SymMacroVec, LBracket,
+                SymLet, SymPoints, Colon, SymTypeVec, LessThan, 
+                    LBracket, SymTypeFloat32, Semicolon, ArrayLength(3), RBracket, 
+                GreaterThan, Equals, SymMacroVec, LBracket,
                     LBracket, Float32(0f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
                     LBracket, Float32(1f32), Comma, Float32(1f32), Comma, Float32(0f32), RBracket, Comma,
                     LBracket, Float32(1f32), Comma, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
@@ -336,7 +346,10 @@ mod loader_tests {
                     LBracket, Float32(1f32), Comma, Float32(1f32), Comma, Float32(1f32), RBracket, Comma,
                     LBracket, Float32(0f32), Comma, Float32(1f32), Comma, Float32(1f32), RBracket, Comma,
                 RBracket, Semicolon,
-                SymLet, SymTexCoords, Colon, SymTypeVec, LessThan, SymTypeFloat32, GreaterThan, Equals, SymMacroVec, LBracket,
+
+                SymLet, SymTexCoords, Colon, SymTypeVec, LessThan,
+                    LBracket, SymTypeFloat32, Semicolon, ArrayLength(2), RBracket, 
+                GreaterThan, Equals, SymMacroVec, LBracket,
                     LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
                     LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
                     LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
@@ -385,7 +398,10 @@ mod loader_tests {
                     LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
                     LBracket, Float32(0f32), Comma, Float32(0f32), RBracket, Comma,
                 RBracket, Semicolon,
-                SymLet, SymNormals, Colon, SymTypeVec, LessThan, SymTypeFloat32, GreaterThan, Equals, SymMacroVec, LBracket,
+                
+                SymLet, SymNormals, Colon, SymTypeVec, LessThan, 
+                    LBracket, SymTypeFloat32, Semicolon, ArrayLength(3), RBracket, 
+                GreaterThan, Equals, SymMacroVec, LBracket,
                     LBracket, Float32( 0f32), Comma, Float32( 0f32), Comma, Float32(-1f32), RBracket, Comma,
                     LBracket, Float32( 0f32), Comma, Float32( 0f32), Comma, Float32(-1f32), RBracket, Comma,
                     LBracket, Float32( 0f32), Comma, Float32( 0f32), Comma, Float32(-1f32), RBracket, Comma,
