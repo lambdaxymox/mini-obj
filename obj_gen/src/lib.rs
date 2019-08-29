@@ -69,11 +69,11 @@ fn generate_points_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
     ir.push(Whitespace(1));
     ir.push(SymTypeVec);
     ir.push(LessThan);
-    // TODO: Make array type generation its own function.
+
     ir.push(LBracket);
     ir.push(SymTypeFloat32); ir.push(Semicolon); ir.push(Whitespace(1)); ir.push(ArrayLength(3));
     ir.push(RBracket);
-    //
+
     ir.push(GreaterThan);
     ir.push(Whitespace(1));
     ir.push(Equals);
@@ -85,7 +85,6 @@ fn generate_points_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
     ir.push(Whitespace(indent));
 
     for point in mesh.points() {
-        // TODO: Make array generation its own function.
         ir.push(LBracket);
         ir.push(Float32(point[0]));
         ir.push(Comma);
@@ -117,11 +116,11 @@ fn generate_tex_coords_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
     ir.push(Whitespace(1));
     ir.push(SymTypeVec);
     ir.push(LessThan);
-    // TODO: Make array generation its own function.
+
     ir.push(LBracket); 
     ir.push(SymTypeFloat32); ir.push(Semicolon); ir.push(Whitespace(1)); ir.push(ArrayLength(2));
     ir.push(RBracket);
-    //
+
     ir.push(GreaterThan);
     ir.push(Whitespace(1));
     ir.push(Equals);
@@ -133,7 +132,6 @@ fn generate_tex_coords_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
     ir.push(Whitespace(indent));
 
     for tex_coord in mesh.tex_coords() {
-        // TODO: Make array generation its own function.
         ir.push(LBracket);
         ir.push(Float32(tex_coord[0]));
         ir.push(Comma);
@@ -162,11 +160,11 @@ fn generate_normals_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
     ir.push(Whitespace(1));
     ir.push(SymTypeVec);
     ir.push(LessThan);
-    // TODO: Array type generate function.
+
     ir.push(LBracket); 
     ir.push(SymTypeFloat32); ir.push(Semicolon); ir.push(Whitespace(1)); ir.push(ArrayLength(3)); 
     ir.push(RBracket);
-    //
+
     ir.push(GreaterThan);
     ir.push(Whitespace(1));
     ir.push(Equals);
@@ -178,7 +176,6 @@ fn generate_normals_code(ir: &mut ObjMeshIR, mesh: &ObjMesh, indent: usize) {
     ir.push(Whitespace(indent));
 
     for normal in mesh.normals() {
-        // TODO: Make array generation its own function.
         ir.push(LBracket);
         ir.push(Float32(normal[0]));
         ir.push(Comma);
