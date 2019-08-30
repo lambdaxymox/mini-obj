@@ -16,10 +16,6 @@ fn generate_code_fragment<P: AsRef<Path>>(path: P) -> String {
 
 fn write_code_fragment(fragment: &str, fragment_name: &str) -> io::Result<()> {
     let path = Path::new("tests").join(fragment_name);
-    if path.exists() {
-            
-    }
-
     let mut file = File::create(&path)?;
     file.write_all(fragment.as_bytes())?;
     file.sync_all()
