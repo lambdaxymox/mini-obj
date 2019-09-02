@@ -2,29 +2,102 @@
 use std::fs::File;
 use std::io;
 use std::io::BufReader;
+use std::mem;
 use std::path::Path;
 
 use wavefront_obj as obj;
 use wavefront_obj::{Element, VTNTriple};
 
 
+#[derive(Clone, Debug, PartialEq)]
+pub struct Points {
+    inner: Vec<[f32; 3]>,
+}
+
+impl Points {
+    #[inline]
+    pub fn as_ptr(&self) -> *const [f32; 3] {
+        self.inner.as_ptr()
+    }
+
+    /// Get the length of the points buffer in bytes.
+    #[inline]
+    pub fn len_bytes(&self) -> usize {
+        3 * mem::size_of::<f32>() * self.inner.len()
+    }
+
+    /// Get the number of elements in the points buffer.
+    #[inline]
+    pub fn len(&self) -> usize {
+        self.inner.len()
+    }
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct TextureCoordinates {
+    inner: Vec<[f32; 2]>,
+}
+
+impl TextureCoordinates {
+    #[inline]
+    pub fn as_ptr(&self) -> *const [f32; 2] {
+        self.inner.as_ptr()
+    }
+
+    /// Get the length of the texture coordinates buffer in bytes.
+    #[inline]
+    pub fn len_bytes(&self) -> usize {
+        2 * mem::size_of::<f32>() * self.inner.len()
+    }
+
+    /// Get the number of elements in the texture coordinates buffer.
+    #[inline]
+    pub fn len(&self) -> usize {
+        self.inner.len()
+    }
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct Normals {
+    inner: Vec<[f32; 3]>,
+}
+
+impl Normals {
+    #[inline]
+    pub fn as_ptr(&self) -> *const [f32; 3] {
+        self.inner.as_ptr()
+    }
+
+    /// Get the length of the normal vector buffer in bytes.
+    #[inline]
+    pub fn len_bytes(&self) -> usize {
+        3 * mem::size_of::<f32>() * self.inner.len()
+    }
+
+    /// Get the number of elements in the normal vector buffer.
+    #[inline]
+    pub fn len(&self) -> usize {
+        self.inner.len()
+    }
+}
+
 /// An `ObjMesh` is a model space representation of a 3D geometric figure.
 /// You typically generate one from parsing a Wavefront *.obj file into
 /// an `ObjMesh`.
 #[derive(Clone, Debug, PartialEq)]
 pub struct ObjMesh {
-    pub points: Vec<[f32; 3]>,
-    pub tex_coords: Vec<[f32; 2]>,
-    pub normals: Vec<[f32; 3]>,
+    pub points: Points,
+    pub tex_coords: TextureCoordinates,
+    pub normals: Normals,
 }
 
 impl ObjMesh {
     /// Generate a new mesh object.
     pub fn new(points: Vec<[f32; 3]>, tex_coords: Vec<[f32; 2]>, normals: Vec<[f32; 3]>) -> ObjMesh {
         ObjMesh {
-            points: points,
-            tex_coords: tex_coords,
-            normals: normals,
+            points: Points { inner: points },
+            tex_coords: TextureCoordinates { inner: tex_coords },
+            normals: Normals { inner: normals },
         }
     }
 
@@ -33,7 +106,7 @@ impl ObjMesh {
     /// system for rendering.
     #[inline]
     pub fn points(&self) -> &[[f32; 3]] {
-        &self.points
+        &self.points.inner
     }
 
     /// Present the texture map as an array slice. This function can be used
@@ -41,7 +114,7 @@ impl ObjMesh {
     /// system for rendering.
     #[inline]
     pub fn tex_coords(&self) -> &[[f32; 2]] {
-        &self.tex_coords
+        &self.tex_coords.inner
     }
 
     /// Present the normal vector map as an array slice. This function can be used
@@ -49,7 +122,7 @@ impl ObjMesh {
     /// system for rendering.
     #[inline]
     pub fn normals(&self) -> &[[f32; 3]] {
-        &self.normals
+        &self.normals.inner
     }
 
     /// Get the number of vertices in the mesh.
@@ -211,11 +284,7 @@ mod loader_tests {
             [ 0.0,  0.0,  1.0], [ 0.0,  0.0,  1.0], [ 0.0,  0.0,  1.0],
         ];
 
-        let obj_mesh = ObjMesh {
-            points: points,
-            tex_coords: tex_coords,
-            normals: normals,
-        };
+        let obj_mesh = ObjMesh::new(points, tex_coords, normals);
 
         Test {
             obj_file: obj_file,

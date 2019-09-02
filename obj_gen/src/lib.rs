@@ -395,11 +395,7 @@ mod loader_tests {
             [ 0.0,  0.0,  1.0], [ 0.0,  0.0,  1.0], [ 0.0,  0.0,  1.0],
         ];
 
-        let obj_mesh = ObjMesh {
-            points: points,
-            tex_coords: tex_coords,
-            normals: normals,
-        };
+        let obj_mesh = ObjMesh::new(points, tex_coords, normals);
 
         use Token::*; 
         let ir = ObjMeshIR::new(vec![
