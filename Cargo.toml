@@ -1,6 +1,6 @@
 [package]
 name = "mini_obj"
-version = "0.1.8"
+version = "0.1.9"
 authors = ["LambdaXymox <lambda.xymox@gmail.com>"]
 edition = "2018"
 description = "A library for representing simpler forms of geometry for computer graphics with Rust code generation."
