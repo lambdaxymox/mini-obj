@@ -7,4 +7,5 @@ description = "A crate for loading object meshes."
 
 
 [dependencies]
-wavefront_obj = { git = "https://github.com/lambdaxymox/wavefront-obj" }
+cgwavefront_obj = { git = "https://github.com/lambdaxymox/cgwavefront_obj" }
+

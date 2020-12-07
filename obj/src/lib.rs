@@ -5,8 +5,11 @@ use std::io::BufReader;
 use std::mem;
 use std::path::Path;
 
-use wavefront_obj as obj;
-use wavefront_obj::{Element, VTNTriple};
+use wavefront_obj::obj;
+use wavefront_obj::obj::{
+    Element, 
+    VTNTriple,
+};
 
 
 #[derive(Clone, Debug, PartialEq)]
@@ -133,8 +136,10 @@ impl ObjMesh {
 }
 
 pub fn load<R: io::Read>(reader: &mut R) -> Result<ObjMesh, String> {
-    let object_set = obj::parse(reader).expect("File not found.");
-    let object = &object_set[0];
+    let mut buffer = String::new();
+    reader.read_to_string(&mut buffer).expect("Read error occurred.");
+    let object_set = obj::parse(&buffer).expect("Parse error occurred.");
+    let object = &object_set.objects[0];
 
     let mut vertices = vec![];
     let mut tex_coords = vec![];
@@ -151,24 +156,24 @@ pub fn load<R: io::Read>(reader: &mut R) -> Result<ObjMesh, String> {
                 for triple in triples.iter() {
                     match triple {
                         VTNTriple::V(vp) => {
-                            vertices.push([vp.x, vp.y, vp.z]);
-                            tex_coords.push([0.0, 0.0]);
-                            normals.push([0.0, 0.0, 0.0]);
+                            vertices.push([vp.x as f32, vp.y as f32, vp.z as f32]);
+                            tex_coords.push([0_f32, 0_f32]);
+                            normals.push([0_f32, 0_f32, 0_f32]);
                         }
                         VTNTriple::VT(vp, vt) => {
-                            vertices.push([vp.x, vp.y, vp.z]);
-                            tex_coords.push([vt.u, vt.v]);
-                            normals.push([0.0, 0.0, 0.0]);
+                            vertices.push([vp.x as f32, vp.y as f32, vp.z as f32]);
+                            tex_coords.push([vt.u as f32, vt.v as f32]);
+                            normals.push([0_f32, 0_f32, 0_f32]);
                         }
                         VTNTriple::VN(vp, vn) => {
-                            vertices.push([vp.x, vp.y, vp.z]);
-                            tex_coords.push([0.0, 0.0]);
-                            normals.push([vn.i, vn.j, vn.k]);
+                            vertices.push([vp.x as f32, vp.y as f32, vp.z as f32]);
+                            tex_coords.push([0_f32, 0_f32]);
+                            normals.push([vn.x as f32, vn.y as f32, vn.z as f32]);
                         }
                         VTNTriple::VTN(vp, vt, vn) => {
-                            vertices.push([vp.x, vp.y, vp.z]);
-                            tex_coords.push([vt.u, vt.v]);
-                            normals.push([vn.i, vn.j, vn.k]);
+                            vertices.push([vp.x as f32, vp.y as f32, vp.z as f32]);
+                            tex_coords.push([vt.u as f32, vt.v as f32]);
+                            normals.push([vn.x as f32, vn.y as f32, vn.z as f32]);
                         }
                     }
                 }
