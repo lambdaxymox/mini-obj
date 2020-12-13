@@ -214,7 +214,7 @@ mod loader_tests {
     }
 
     fn test() -> Test {
-        let obj_file = String::from(r"        \
+        let obj_file = String::from(r" \
             o object1                         \
             g cube                            \
             v  0.0  0.0  0.0                  \
